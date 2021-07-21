@@ -8,7 +8,6 @@ export class SettingsService {
     private linkTheme = document.querySelector('#theme');
 
     constructor() {
-        console.log('Constructor: Settings');
         const tema = localStorage.getItem('theme') || './assets/css/colors/default-dark.css';
         this.linkTheme.setAttribute('href', tema);
     }
