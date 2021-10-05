@@ -1,0 +1,7 @@
+{
+    "/apirestAdminpro/public/*": {
+        "target": "http://192.168.100.33",
+        "secure": false,
+        "logLevel": "debug"
+    }
+}
