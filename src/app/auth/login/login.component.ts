@@ -16,9 +16,11 @@ export class LoginComponent implements OnInit {
     public loginForm = this.fb.group({
 
         email: [localStorage.getItem('email') || '', [Validators.required, Validators.email ] ],
-        password: ['', Validators.required ],
-        remember: [false]
+        password: ['12341234', Validators.required ],
+        remember: [true]
     });
+    public formSubmitted = false;
+    public btnLogin = '';
 
     constructor( private router: Router, private fb: FormBuilder, private us: UsuarioService) { }
 
@@ -28,21 +30,36 @@ export class LoginComponent implements OnInit {
     // tslint:disable-next-line:typedef
     login() {
         // this.router.navigateByUrl('/');
-        this.us.loginUsuario( this.loginForm.value ).subscribe(resp => {
-            console.log(resp);
+        this.formSubmitted = true;
+        this.btnLogin = 'disabled';
+        if (this.loginForm.invalid) {
+            Swal.fire('ERROR LOGIN', 'Campos incorrectos', 'error');
+            this.btnLogin = '';
+            return;
+        }
+        this.us.loginUsuario( this.loginForm.value )
+        .subscribe(resp => {
             if (this.loginForm.get('remember').value){
                 localStorage.setItem('email', this.loginForm.get('email').value);
             } else {
                 localStorage.removeItem('email');
             }
             // IR al dashboard
+            this.btnLogin = '';
             this.router.navigateByUrl('/');
         }, (err) => {
             // Si suceden un error
-            console.warn(err.error);
-            const e = err.error;
-            Swal.fire('ERROR-' + e.error, e.messages.error, 'error');
+            console.error(err);
+            let code = 502;
+            let smsError = 'Timeout';
+            if(err !== 1){
+                console.warn(err.error);
+                const e = err.error;
+                code = e.error;
+                smsError = e.messages.error;
+            }
+            this.btnLogin = '';
+            Swal.fire('ERROR-' + code, smsError, 'error');
         });
     }
-
 }

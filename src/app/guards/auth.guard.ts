@@ -12,9 +12,8 @@ export class AuthGuard implements CanActivate {
 
     }
 
-    canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot) {
+    // tslint:disable-next-line:typedef
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
         console.log('pasa x el canActivate guard');
         return this.us.validarToken().pipe(
             tap( estaAutenticado => {
