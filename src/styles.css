@@ -13,8 +13,12 @@
     cursor: pointer;
 }
 
+.w100 {
+    width: 100px;
+}
+
 .w170 {
-    width: 70px;
+    width: 170px;
 }
 
 .w150 {
@@ -42,4 +46,23 @@
 .img-avatar {
     width: 150px;
     height: 150px;
+}
+
+.avatar {
+    border-radius: 100%;
+    width: 45px;
+}
+
+.fondo-modal-imagen {
+    background-color: rgba(0, 0, 0, 0.4);
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+}
+
+.oculto {
+    display: none;
 }

@@ -1,14 +1,16 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { tap, map, catchError, timeout, timeoutWith } from 'rxjs/operators';
+import { tap, map, catchError, timeout, timeoutWith, delay } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 
 import { LoginForm } from '../interfaces/login-form.interface';
 import { RegisterForm } from '../interfaces/register-form.interface';
+import { CargarUsuario } from '../interfaces/cargar-usuarios.interface';
 import { Observable, of, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { Usuario } from '../models/usuario.model';
+
 
 const base_url = environment.base_url;
 
@@ -26,6 +28,16 @@ export class UsuarioService {
 
     get uid(): string{
         return this.usuario.id || '';
+    }
+
+    get headers(): any{
+        return {
+            // headers: new HttpHeaders().set('Authorization', this.token)
+            headers: {
+                // tslint:disable-next-line:object-literal-key-quotes
+                'Authorization': this.token || ''
+            }
+        };
     }
 
     logout(): void {
@@ -86,8 +98,35 @@ export class UsuarioService {
             ...data,
             role: this.usuario.role
         };
-        return this.http.put( `${ base_url }/usuarios/${ this.uid }`, data, {
-            headers: new HttpHeaders().set('Authorization', this.token)
-        });
+        return this.http.put( `${ base_url }/usuarios/${ this.uid }`, data, this.headers);
+    }
+
+    // tslint:disable-next-line:typedef
+    cargar_usuarios(desde: number = 1) {
+        const url = `${ base_url }/usuarios?page=${ desde }`;
+        return this.http.get<CargarUsuario>(url, this.headers ).pipe(
+            delay(1000),
+            map( resp => {
+                console.log( resp );
+                const userRecibidos = resp.usuarios.map(
+                    user => new Usuario (user.nombre, user.email, '', user.img, user.google, user.role, user.id )
+                );
+                return {
+                    total: resp.total,
+                    usuarios: userRecibidos
+                };
+            })
+        );
+    }
+
+    // tslint:disable-next-line:typedef
+    elimina_usuario(user: Usuario ) {
+        console.log(' eliminando ..');
+        return this.http.delete( `${ base_url }/usuarios/${ user.id }`, this.headers);
+    }
+
+    // tslint:disable-next-line:typedef
+    guardarUsuario( user: Usuario) {
+        return this.http.put( `${ base_url }/usuarios/${ user.id }`, user, this.headers);
     }
 }
