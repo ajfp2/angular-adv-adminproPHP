@@ -7,7 +7,6 @@ const base_url = environment.base_url;
   providedIn: 'root'
 })
 export class ModalImagenService {
-
     // tslint:disable-next-line:variable-name
     private _ocultarModal = true;
     public tipo: 'usuarios'|'medicos'|'hospitales';

@@ -104,9 +104,9 @@ export class UsuarioService {
     // tslint:disable-next-line:typedef
     cargar_usuarios(desde: number = 1) {
         const url = `${ base_url }/usuarios?page=${ desde }`;
-        return this.http.get<CargarUsuario>(url, this.headers ).pipe(
+        return this.http.get<CargarUsuario[]>(url, this.headers ).pipe(
             delay(1000),
-            map( resp => {
+            map( (resp: any) => {
                 console.log( resp );
                 const userRecibidos = resp.usuarios.map(
                     user => new Usuario (user.nombre, user.email, '', user.img, user.google, user.role, user.id )
