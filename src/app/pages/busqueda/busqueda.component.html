@@ -1,0 +1,103 @@
+<div class="row animted fadeIn fast">
+
+    <div class="col-4">
+        <div class="card">
+            <div class="card-body">
+                <h3>Usuarios</h3>
+                <div class="alert alert-info" role="alert" *ngIf="usuarios.length === 0">
+                    No hay usuarios con ese criterio de busqueda
+                </div>
+
+                <div class="table-responsive" *ngIf="usuarios.length > 0">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Avatar</th>
+                                <th>Nombre</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let user of usuarios; let i=index" class="animated fadeIn fast">
+                                <td>{{ i + 1 }}</td>
+                                <td>
+                                    <img [src]="user.img | imagen:'usuarios'" alt="imagen usuario" class="w75 img-thumbnail">
+                                </td>
+                                <td>{{ user.nombre}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-4">
+        <div class="card">
+            <div class="card-body">
+                <h3>Médicos</h3>
+                <div class="alert alert-info" role="alert" *ngIf="medicos.length === 0">
+                    <p>No hay médicos con ese criterio de busqueda</p>
+                </div>
+
+                <div class="table-responsive" *ngIf="medicos.length > 0">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Avatar</th>
+                                <th>Nombre</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let med of medicos; let i=index" class="animated fadeIn fast" (click)="abrirMedico( med );">
+                                <td>{{ i + 1 }}</td>
+                                <td>
+                                    <img [src]="med.img | imagen:'medicos'" alt="imagen medicos" class="w75 img-thumbnail">
+                                </td>
+                                <td>
+                                    <a [routerLink]="['/dashboard', 'medico', med.id]">
+                                        {{ med.nombre}}
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-4">
+        <div class="card">
+            <div class="card-body">
+                <h3>Hospitales</h3>
+                <div class="alert alert-info" role="alert" *ngIf="hospitales.length === 0">
+                    <p>No hay hospitales con ese criterio de busqueda</p>
+                </div>
+
+                <div class="table-responsive" *ngIf="hospitales.length > 0">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Foto</th>
+                                <th>Nombre</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let hosp of hospitales; let i=index" class="animated fadeIn fast">
+                                <td>{{ i + 1 }}</td>
+                                <td>
+                                    <img [src]="hosp.img | imagen:'hospitales'" alt="imagen hospital" class="w75 img-thumbnail">
+                                </td>
+                                <td>{{ hosp.nombre}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

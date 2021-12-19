@@ -30,6 +30,10 @@ export class UsuarioService {
         return this.usuario.id || '';
     }
 
+    get role(): 'ADMIN' | 'USER' {
+        return this.usuario.role;
+    }
+
     get headers(): any{
         return {
             // headers: new HttpHeaders().set('Authorization', this.token)
@@ -40,8 +44,16 @@ export class UsuarioService {
         };
     }
 
+    // tslint:disable-next-line:typedef
+    guardarLocalStorage(token: string, menu: any) {
+        localStorage.setItem('token', token);
+        localStorage.setItem('menu', JSON.stringify( menu ));
+    }
+
     logout(): void {
+        // TODO: Boorrar menu
         localStorage.removeItem('token');
+        localStorage.removeItem('menu');
         this.router.navigateByUrl('/login');
     }
 
@@ -51,12 +63,11 @@ export class UsuarioService {
         }).pipe(
             timeoutWith(15000, throwError(1)),
             map( (resp: any) => {
-                // console.log('Valida token', resp );
                 const { email, google, id, img = '', nombre, role } = resp.usuario;
 
                 this.usuario = new Usuario( nombre, email, '', img, google, role, id);
                 // this.usuario.imprimirUsuario();
-                localStorage.setItem('token', resp.token);
+                this.guardarLocalStorage( resp.token, resp.menu);
                 return true;
             }),
             catchError( error => of(false) )
@@ -86,7 +97,8 @@ export class UsuarioService {
             timeoutWith(8000, throwError(1)),
             tap( (resp: any) => {
                 // console.log('login tap', resp );
-                localStorage.setItem('token', resp.token);
+                // localStorage.setItem('token', resp.token);
+                this.guardarLocalStorage( resp.token, resp.menu);
             })
         );
 

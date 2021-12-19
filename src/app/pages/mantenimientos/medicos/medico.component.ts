@@ -48,7 +48,6 @@ export class MedicoComponent implements OnInit {
         }
 
         this.ms.getMedico(idMed).pipe(delay(1000)).subscribe( medico => {
-            console.log('medico', medico);
             if (!medico){
                 return this.router.navigateByUrl('/dashboard/medicos');
             }
@@ -62,7 +61,6 @@ export class MedicoComponent implements OnInit {
     // tslint:disable-next-line:typedef
     cargarHospitales() {
         this.hs.cargar_hospitales().subscribe( (hospitales: any) => {
-            console.log('hospitales', hospitales);
             this.hospitales = hospitales;
         });
     }

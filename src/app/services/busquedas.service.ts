@@ -65,4 +65,10 @@ export class BusquedasService {
             })
         );
     }
+
+    // tslint:disable-next-line:typedef
+    busquedasGlobales( termino: string ){
+        const url = `${ base_url }/busquedas/${ termino }`;
+        return this.http.get<any[]>(url, this.headers );
+    }
 }
